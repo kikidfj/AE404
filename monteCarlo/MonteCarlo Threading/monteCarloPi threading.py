@@ -39,7 +39,7 @@ def main():
 	t2.start()
 	t3.start()
 
-	ret = monteCarloPi(int(TOTAL_POINTS/4), p4)
+	ret = monteCarloPi(TOTAL_POINTS - 3 * int(TOTAL_POINTS/4), p4)
 	
 	t1.join()
 	t2.join()

@@ -20,7 +20,7 @@ def monteCarloPi(totalPoints, pilId, pilName):
 
 	for i in range(totalPoints):
 		if(xs[i]*xs[i] + ys[i]*ys[i]) < RADIUS*RADIUS:
-			pt[0] += 1
+			pt += 1
 
 	if pilId >= 0:
 		pil = shared_memory.ShareableList(name = pilName)
