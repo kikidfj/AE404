@@ -1,14 +1,14 @@
-from enum import Enum, auto
+from enum import IntEnum, auto
 import random
 import copy
 import time
 
 #Enum because it cleaner than passing strings or integers relating to moves around
-class Moves(Enum):
-    UP = auto()
-    DOWN = auto()
-    RIGHT = auto()
-    LEFT = auto()
+class Moves(IntEnum):
+    UP = 0
+    DOWN = 1
+    RIGHT = 2
+    LEFT = 3
 
 class Grid:
     #Grid can adapt to any size, also allows for templates to be followed (Copy previous game state, used for AI)

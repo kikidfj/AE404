@@ -1,17 +1,27 @@
+from lib.Grid import Grid, Moves
+from lib.AI import AI
 import sys
 import math
 import random
+import time
+
 
 MAP_FILE_NAME = "MAPFILE.txt"
 STEPS_FILE_NAME = "steps.txt"
 UP_DOWN_SCORE_HIGHER = True
 LEFT_RIGHT_SCORE_HIGHER = False
+N_GAMES = 2000
+
+DEBUG=False
+
 
 def readMap():
-	fReadMap = open(MAP_FILE_NAME, "r")
-	lines = fReadMap.readlines()
 
 	currentMap = []
+	
+	fReadMap = open(MAP_FILE_NAME, "r")
+	lines = fReadMap.readlines()
+	
 
 	for line in lines:
 		currentMap.append(line.split('\t'))
@@ -23,24 +33,37 @@ def readMap():
 			strTemp = strTemp + "\t" + item
 		print(strTemp)
 		id+=1
-	return currentMap
 
 
+	return [[int(num) for num in row] for row in currentMap]
 
-def writeStep(_score_higher):
+def moveMonteCarlo(_currentMap):
+	if DEBUG:
+		print(str(_currentMap))
+	game = Grid(template=_currentMap)
+	Ai = AI(multi_core=True)
+
+	choice = Ai.next_move(game, N_GAMES)
+	print("monteChoice" + str(choice))
+	game.move(choice)
+
+	print(game)	
+
+	return choice
+
+
+def writeStep(_monteCarloMove):
 	f = open(STEPS_FILE_NAME, "a")
-	res = random.randint(0, 1)
-
-	if(_score_higher == UP_DOWN_SCORE_HIGHER):
-		if res == 0:
-			f.write('w')
-		elif res == 1:
-			f.write('s')
-	else:
-		if res == 0:
-			f.write('a')
-		elif res == 1:
-			f.write('d')
+	
+	if _monteCarloMove == Moves.UP:
+		f.write('w')
+	elif _monteCarloMove == Moves.DOWN:
+		f.write('s')
+	
+	if _monteCarloMove == Moves.LEFT:
+		f.write('a')
+	elif _monteCarloMove == Moves.RIGHT:
+		f.write('d')
 	f.close()
 	return
 
@@ -54,8 +77,9 @@ def sum_up_down(_currentMap):
 				score_add += last_num * 2
 				last_num = -1 # prevent next comparison
 			else:
-				last_num = int(_currentMap[i][j])
-	print("score add left_right:" + str(score_add))
+				if int(_currentMap[i][j]) != 0:
+					last_num = int(_currentMap[i][j])
+	print("score add up_down:" + str(score_add))
 	return score_add
 
 
@@ -68,17 +92,21 @@ def sum_left_right(_currentMap):
 				score_add += last_num * 2
 				last_num = -1 # prevent next comparison
 			else:
-				last_num = int(_currentMap[i][j])
+				if int(_currentMap[i][j]) != 0:
+					last_num = int(_currentMap[i][j])
 	print("score add left_right:" + str(score_add))
 	return score_add
+
+
 
 def main():
 	#print("debug here")
 	currentMap = readMap()
-	if sum_up_down(currentMap) > sum_left_right(currentMap):
-		writeStep(UP_DOWN_SCORE_HIGHER)
-	else:
-		writeStep(LEFT_RIGHT_SCORE_HIGHER)
+	start = time.time()
+	choice = moveMonteCarlo(currentMap)
+	end = time.time()
+	print("MonteCarlo duration: " + str(end - start))
+	writeStep(choice)
 
 
 if __name__ == '__main__':
