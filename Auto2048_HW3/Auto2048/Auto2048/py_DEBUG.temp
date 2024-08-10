@@ -1,0 +1,23 @@
+row=0
+	2	128	8	2
+
+row=1
+	512	8	2	4
+
+row=2
+	4	2	0	0
+
+row=3
+	4	2	0	0
+
+row=4
+	4496
+callMonteCarlo
+DOWN
+monteChoice1
+[0, 0, 0, 2]
+[2, 128, 0, 0]
+[512, 8, 8, 2]
+[8, 4, 2, 4]
+
+MonteCarlo duration: 1.013171911239624

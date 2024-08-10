@@ -40,6 +40,7 @@ def readMap():
 def moveMonteCarlo(_currentMap):
 	if DEBUG:
 		print(str(_currentMap))
+	print("callMonteCarlo")
 	game = Grid(template=_currentMap)
 	Ai = AI(multi_core=True)
 
@@ -110,4 +111,4 @@ def main():
 
 
 if __name__ == '__main__':
-    main()
+	main()
